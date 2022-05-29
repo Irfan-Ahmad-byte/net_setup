@@ -1,12 +1,7 @@
 """
     A script that will take a NetworkX JSON description file with assigned link ports and host
     IP and MAC addresses and create the network it within Mininet.  It also takes the IP address
-    of a remote controller.  
-    
-    This version of NetRunner sets the OpenFlow switch DPID directly based on
-    the switch name. Switch names must be short (less than 8 characters) ASCII
-    character sequences.
-    
+    of a remote controller.
     usage: sudo python NetRunner2.py -f net_file_name -ip remote_controller_ip_address
 """
 import argparse
@@ -19,17 +14,6 @@ from mininet.topo import Topo
 from mininet.link import TCLink
 from networkx.readwrite import json_graph
 
-# Turns a string, like the node name,or array of bytes into a long
-# from http://stackoverflow.com/questions/25259947/convert-variable-sized-byte-array-to-a-integer-long
-def bytes_to_int(bytes):
-  return int(bytes.encode('hex'), 16)
-  
-# Takes a int or long and turns it into a hex string without the leading
-# 0x or the sometimes trailing L.
-def hex_strip(n):
-    hexString = hex(n)
-    plainString = hexString.split("0x")[1] # Gets rid of the Ox of the hex string
-    return plainString.split("L")[0] #Gets rid of the trailing L if any
 
 class GraphTopoFixedAddrPorts(Topo):
     """ Creates a Mininet topology based on a NetworkX graph object where
@@ -40,15 +24,10 @@ class GraphTopoFixedAddrPorts(Topo):
         Topo.__init__(self, **opts)
         nodes = graph.nodes()
         node_names = {}
-        for node in nodes: # node is the unicode string name of the node
+        for node in nodes:
             tmp_node = graph.node[node]
             if tmp_node['type'] == 'switch':
-                # Creates a datapath id based on the name as an string of ascii bytes
-                # Mininet wants this as a hex string without the 0x or L
-                our_dpid = hex_strip(bytes_to_int(node.encode('ascii'))) 
-                print ("Node: {} dpid: {}".format(node, our_dpid))
-                switch = self.addSwitch(node.encode('ascii'), listenPort=listenPort, 
-                    dpid=our_dpid)
+                switch = self.addSwitch(node.encode('ascii'), listenPort=listenPort)
                 listenPort += 1
                 node_names[node.encode('ascii')] = switch
             else:
@@ -68,14 +47,24 @@ class GraphTopoFixedAddrPorts(Topo):
     def from_file(filename):
         """Creates a Mininet topology from a given JSON filename."""
         f = open(filename)
-        tmp_graph = json_graph.node_link_graph(json.load(f))
+        tmp_graph = json_graph.node_link_graph(in_adjust_ports(json.load(f)))
         f.close()
-        print(tmp_graph.nodes(data=True))
-        #print(tmp_graph.links())
-        #exit()
         return GraphTopoFixedAddrPorts(tmp_graph)
 
-
+# A small adjustment in port representation from the JSON needed prior
+# to converting to NetworkX's internal format.
+def in_adjust_ports(gnl_dict):
+    """ Converts from ports {"srcPort": num1, "trgPort": num2} format to
+        ports {"SrcNodeId": num1, "TrgNodeId": num2} format.
+    """
+    for link in gnl_dict["links"]:
+        if "ports" in link:
+            ports = link["ports"]
+            new_ports = {
+                gnl_dict['nodes'][link["source"]]['id']: ports["srcPort"],
+                gnl_dict['nodes'][link["target"]]['id']: ports["trgPort"]}
+            link["ports"] = new_ports
+    return gnl_dict
 
 if __name__ == '__main__':
     fname = "../samples/ExNetwithLoops1A.json"  # You can put your default file here
