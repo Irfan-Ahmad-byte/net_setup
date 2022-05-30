@@ -1,25 +1,8 @@
-"""
-    A script that will take a NetworkX JSON description file with assigned link ports and host
-    IP and MAC addresses and create the network it within Mininet.  It also takes the IP address
-    of a remote controller.  
-    
-    This version of NetRunner sets the OpenFlow switch DPID directly based on
-    the switch name. Switch names must be short (less than 8 characters) ASCII
-    character sequences.
-    
-    usage: sudo python NetRunner2.py -f net_file_name -ip remote_controller_ip_address
-"""
-import argparse
 import json
-from mininet.cli import CLI
-from mininet.log import lg
-from mininet.node import RemoteController
 from mininet.net import Mininet
 from mininet.topo import Topo
-from mininet.link import TCLink
-from networkx.readwrite import json_graph
 
-# make butes into long
+# make bytes into long
 # source http://stackoverflow.com/questions/25259947/convert-variable-sized-byte-array-to-a-integer-long
 def to_int(bytes):
   return int(bytes.encode('hex'), 16)
@@ -60,16 +43,5 @@ class cutomTopo(Topo):
             cp = edge['capacity']
             self.addLink(edge['source'],edge['target'],port1=edge['ports'][0], port2=edge['ports'][1],
                          delay=delay, bw=cp)
-    # @staticmethod
-    # def from_file(filename):
-    #     """Creates a Mininet topology from a given JSON filename."""
-    #     f = open(filename)
-    #     tmp_graph = json_graph.node_link_graph(json.load(f))
-    #     f.close()
-    #     print(tmp_graph.nodes(data=True))
-    #     #print(tmp_graph.links())
-    #     #exit()
-    #     return GraphTopoFixedAddrPorts(tmp_graph)
-
 
 topos = {'customTopo': ( lambda: customTopo() )}
