@@ -32,13 +32,12 @@ class customTopo(Topo):
                 listenPort += 1
                 node_names[node['id']] = switch
             else:
-                host = self.addHost(node['id'], **node)
+                host = self.addHost(node['id'], mac=node['mac'], ip=node['ip'])
                 node_names[node['id']] = host
         edges = graph['links']
         for edge in edges:
             delay = str(edge['weight']) + "ms"
-            cp = edge['capacity']
             self.addLink(edge['source'],edge['target'],port1=edge['ports'][0], port2=edge['ports'][1],
-                         delay=delay, bw=cp)
+                         delay=delay)
 
 topos = {'customTopo': ( lambda: customTopo() )}
