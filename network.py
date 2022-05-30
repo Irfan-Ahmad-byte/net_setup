@@ -15,9 +15,9 @@ def clean_hex(n):
 
 class customTopo(Topo):
     """ create a custom topology"""
-    def __init__(self, **opts):
+    def __init__(self):
         listenPort = 6653
-        Topo.__init__(self, **opts)
+        Topo.__init__(self)
         fl = open('network.json')
         graph = json.load(fl)
         fl.close()
