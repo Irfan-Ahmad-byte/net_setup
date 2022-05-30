@@ -37,7 +37,7 @@ class customTopo(Topo):
                 node_names[node['id'].encode('ascii')] = host
         edges = graph['links']
         for edge in edges:
-            delay = edge['weight']
+            delay = str(edge['weight'])+'ms'
             ports = list(edge['ports'].keys())
             p1 = ports[0]
             p2 = ports[1]
