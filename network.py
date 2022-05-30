@@ -15,9 +15,9 @@ def clean_hex(n):
 
 class customTopo(Topo):
     """ create a custom topology"""
-    def __init__(self):
+    def __init__(self, **opts):
         listenPort = 6653
-        Topo.__init__(self)
+        Topo.__init__(self, **opts)
         fl = open('network.json')
         graph = json.load(fl)
         fl.close()
@@ -27,7 +27,8 @@ class customTopo(Topo):
             if node['type'] == 'switch':
                 # datapath id as ascii and to hex
                 our_dpid = node['id'] 
-                switch = self.addSwitch(node['id'])
+                switch = self.addSwitch(node['id'], listenPort=listenPort, 
+                    dpid=our_dpid)
                 listenPort += 1
                 node_names[node['id']] = switch
             else:
@@ -36,6 +37,9 @@ class customTopo(Topo):
         edges = graph['links']
         for edge in edges:
             delay = str(edge['weight']) + "ms"
-            self.addLink(edge['source'],edge['target'])
+            p1 = edge['ports'][0]
+            p2 = edge['ports'][1]
+            self.addLink(edge['source'],edge['target'],port1=edge['ports'][p1], port2=edge['ports'][p2],
+                         delay=delay)
 
 topos = {'customTopo': ( lambda: customTopo() )}
