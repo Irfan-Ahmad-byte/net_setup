@@ -30,10 +30,10 @@ class customTopo(Topo):
                 switch = self.addSwitch(node['id'], listenPort=listenPort, 
                     dpid=our_dpid)
                 listenPort += 1
-                node_names[node['id'].encode('ascii')] = switch
+                node_names[node['id']] = switch
             else:
                 host = self.addHost(node['id'], mac=node['mac'], ip=node['ip'])
-                node_names[node['id'].encode('ascii')] = host
+                node_names[node['id']] = host
         edges = graph['links']
         for edge in edges:
             delay = edge['weight']
