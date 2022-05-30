@@ -26,14 +26,14 @@ class customTopo(Topo):
         for node in nodes: # node name as unicode str
             if node['type'] == 'switch':
                 # datapath id as ascii and to hex
-                our_dpid = our_dpid = clean_hex(to_int(node['id'].encode('ascii')))
+                our_dpid = our_dpid = clean_hex(to_int(node['id']))
                 switch = self.addSwitch(node['id'], listenPort=listenPort, 
                     dpid=our_dpid)
                 listenPort += 1
-                node_names[node['id'].encode('ascii')] = switch
+                node_names[node['id']] = switch
             else:
                 host = self.addHost(node['id'], mac=node['mac'], ip=node['ip'])
-                node_names[node['id'].encode('ascii')] = host
+                node_names[node['id']] = host
         edges = graph['links']
         for edge in edges:
             delay = edge['weight']
