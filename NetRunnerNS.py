@@ -46,7 +46,7 @@ class GraphTopoFixedAddrPorts(Topo):
                 # Creates a datapath id based on the name as an string of ascii bytes
                 # Mininet wants this as a hex string without the 0x or L
                 our_dpid = hex_strip(bytes_to_int(node.encode('ascii'))) 
-                print "Node: {} dpid: {}".format(node, our_dpid)
+                print ("Node: {} dpid: {}".format(node, our_dpid))
                 switch = self.addSwitch(node.encode('ascii'), listenPort=listenPort, 
                     dpid=our_dpid)
                 listenPort += 1
@@ -80,7 +80,7 @@ topos = {'customTopo': ( lambda: GraphTopoFixedAddrPorts.from_file() )}
 
 # if __name__ == '__main__':
 #     fname = "../samples/ExNetwithLoops1A.json"  # You can put your default file here
-#     remoteIP = "192.168.1.134"      # Put your default remote IP here
+#     remoteIP = "192.168.100.6"      # Put your default remote IP here
 #     # Using the nice Python argparse library to take in optional arguments
 #     # for file name and remote controller IP address
 #     parser = argparse.ArgumentParser()
@@ -88,14 +88,14 @@ topos = {'customTopo': ( lambda: GraphTopoFixedAddrPorts.from_file() )}
 #     parser.add_argument("-ip", "--remote_ip", help="IP address of remote controller")
 #     args = parser.parse_args()
 #     if not args.fname:
-#         print "fname not specified using: {}".format(fname)
+#         print ("fname not specified using: {}".format(fname))
 #     else:
 #         fname = args.fname
 #     if not args.remote_ip:
-#         print "remote controller IP not specified using: {}".format(remoteIP)
+#         print ("remote controller IP not specified using: {}".format(remoteIP))
 #     else:
 #         remoteIP = args.remote_ip
-#     topo = GraphTopoFixedAddrPorts.from_file(fname)
+#     topo = GraphTopoFixedAddrPorts.from_file()
 #     lg.setLogLevel('info')
 #     network = Mininet(controller=RemoteController, autoStaticArp=True, link=TCLink)
 #     network.addController(controller=RemoteController, ip=remoteIP)
