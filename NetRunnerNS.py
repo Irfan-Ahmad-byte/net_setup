@@ -65,7 +65,7 @@ class GraphTopoFixedAddrPorts(Topo):
             self.addLink(node_names[edge[0]],node_names[edge[1]],port1=port1, port2=port2,
                          delay=delay, bw=bw)
     @staticmethod
-    def from_file(filename):
+    def from_file(filename='network.json'):
         """Creates a Mininet topology from a given JSON filename."""
         f = open(filename)
         tmp_graph = json_graph.node_link_graph(json.load(f))
@@ -76,7 +76,7 @@ class GraphTopoFixedAddrPorts(Topo):
         return GraphTopoFixedAddrPorts(tmp_graph)
 
 
-topos = {'customTopo': ( lambda: GraphTopoFixedAddrPorts() )}
+topos = {'customTopo': ( lambda: GraphTopoFixedAddrPorts.from_file() )}
 
 # if __name__ == '__main__':
 #     fname = "../samples/ExNetwithLoops1A.json"  # You can put your default file here
