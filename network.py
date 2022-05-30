@@ -27,7 +27,7 @@ class customTopo(Topo):
             if node['type'] == 'switch':
                 # datapath id as ascii and to hex
                 our_dpid = node['id'] 
-                switch = self.addSwitch(node['id'], 
+                switch = self.addSwitch(node['id'], listenPort=listenPort, 
                     dpid=our_dpid)
                 listenPort += 1
                 node_names[node['id']] = switch
@@ -37,9 +37,10 @@ class customTopo(Topo):
         edges = graph['links']
         for edge in edges:
             delay = str(edge['weight']) + "ms"
-            p1 = edge['ports'][0]
-            p2 = edge['ports'][1]
-            self.addLink(edge['source'],edge['target'],port1=edge['ports'][p1], port2=edge['ports'][p2],
+            ports = list(edge['ports'].keys())
+            p1 = ports[0]
+            p2 = ports[1]
+            self.addLink(edge['source'],edge['target'],port1=edge['ports'][p1], port2=edge['ports'][],
                          delay=delay)
 
 topos = {'customTopo': ( lambda: customTopo() )}
