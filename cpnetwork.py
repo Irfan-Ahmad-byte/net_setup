@@ -1,6 +1,4 @@
 import json
-from mininet.net import Mininet
-from mininet.topo import Topo
 
 # make bytes into long
 # source http://stackoverflow.com/questions/25259947/convert-variable-sized-byte-array-to-a-integer-long
@@ -13,17 +11,15 @@ def clean_hex(n):
     plainstr = hxstr.split("0x")[1]
     return plainstr.split("L")[0]
 
-class customTopo(Topo):
+class customTopo():
     """ create a custom topology"""
-    def __init__(self, **opts):
-        listenPort = 6653
-        Topo.__init__(self, **opts)
+    def __init__(self):
         fl = open('network.json')
         graph = json.load(fl)
         fl.close()
         nodes = graph['nodes']
         node_names = {}
-        for node in nodes: # node name as unicode str
+        for node in nodes: # node name as unicode st
             if node['type'] == 'switch':
                 # datapath id as ascii and to hex
                 our_dpid = clean_hex(to_int(node['id'].encode('ascii'))) 
@@ -40,5 +36,6 @@ class customTopo(Topo):
             cp = edge['capacity']
             self.addLink(edge['source'],edge['target'],port1=edge['ports'][0], port2=edge['ports'][1],
                          delay=delay, bw=cp)
+        print(node_names)
 
-topos = {'customTopo': ( lambda: customTopo() )}
+topo= customTopo()
