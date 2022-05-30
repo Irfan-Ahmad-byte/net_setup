@@ -1,0 +1,166 @@
+{
+    "nodes": [
+        {
+            "ip": "10.0.0.1",
+            "mac": "00:00:00:00:00:1",
+            "y": 61,
+            "x": 204,
+            "type": "host",
+            "id": "h1"
+        },
+        {
+            "ip": "10.0.0.2",
+            "mac": "00:00:00:00:00:2",
+            "y": 123,
+            "x": 125,
+            "type": "host",
+            "id": "h2"
+        },
+        {
+            "ip": "10.0.0.3",
+            "mac": "00:00:00:00:00:3",
+            "y": 176,
+            "x": 171,
+            "type": "host",
+            "id": "h3"
+        },
+        {
+            "ip": "10.0.0.4",
+            "mac": "00:00:00:00:00:4",
+            "y": 273,
+            "x": 155,
+            "type": "host",
+            "id": "h4"
+        },
+        {
+            "ip": "10.0.0.5",
+            "mac": "00:00:00:00:00:5",
+            "y": 325,
+            "x": 209,
+            "type": "host",
+            "id": "h5"
+        },
+        {
+            "ip": "10.0.0.6",
+            "mac": "00:00:00:00:00:6",
+            "y": 267,
+            "x": 399,
+            "type": "host",
+            "id": "h6"
+        },
+        {
+            "y": 142,
+            "x": 209,
+            "type": "switch",
+            "id": "s1"
+        },
+        {
+            "y": 247,
+            "x": 230,
+            "type": "switch",
+            "id": "s2"
+        }
+    ],
+    "links": [
+        {
+            "source": "h1",
+            "capacity": 40,
+            "weight": 2,
+            "target": "s1",
+            "ports": {
+                "h1": 1,
+                "s1": 1
+            }
+        },
+        {
+            "source": "s1",
+            "capacity": 40,
+            "weight": 2,
+            "target": "s2",
+            "ports": {
+                "s1": 2,
+                "s2": 1
+            }
+        },
+        {
+            "source": "s2",
+            "capacity": 40,
+            "weight": 2,
+            "target": "h2",
+            "ports": {
+                "s2": 1,
+                "h2": 1
+            }
+        },
+        {
+            "source": "h2",
+            "capacity": 40,
+            "weight": 2,
+            "target": "h3",
+            "ports": {
+                "h2": 2,
+                "h3": 1
+            }
+        },
+        {
+            "source": "h3",
+            "capacity": 11,
+            "weight": 20,
+            "target": "h4",
+            "ports": {
+                "h3": 2,
+                "h4": 1
+            }
+        },
+        {
+            "source": "h1",
+            "capacity": 20,
+            "weight": 7,
+            "target": "h4",
+            "ports": {
+                "h1": 2,
+                "h4": 2
+            }
+        },
+        {
+            "source": "h1",
+            "capacity": 40,
+            "weight": 2,
+            "target": "h5",
+            "ports": {
+                "h1": 3,
+                "h5": 1
+            }
+        },
+        {
+            "source": "h4",
+            "capacity": 40,
+            "weight": 2,
+            "target": "h5",
+            "ports": {
+                "h4": 3,
+                "h5": 2
+            }
+        },
+        {
+            "source": "h5",
+            "capacity": 40,
+            "weight": 2,
+            "target": "h6",
+            "ports": {
+                "h5": 3,
+                "h6": 1
+            }
+        },
+        {
+            "source": "h3",
+            "capacity": 16,
+            "weight": 10,
+            "target": "h6",
+            "ports": {
+                "h3": 3,
+                "h6": 2
+            }
+        }
+    ]
+}
