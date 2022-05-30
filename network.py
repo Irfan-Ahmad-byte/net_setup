@@ -36,11 +36,11 @@ class customTopo(Topo):
                 node_names[node['id']] = host
         edges = graph['links']
         for edge in edges:
-            delay = str(edge['weight']) + "ms"
+            delay = edge['weight']
             ports = list(edge['ports'].keys())
             p1 = ports[0]
             p2 = ports[1]
-            self.addLink(edge['source'],edge['target'],port1=edge['ports'][p1], port2=edge['ports'][],
+            self.addLink(edge['source'],edge['target'],port1=edge['ports'][p1], port2=edge['ports'][p2],
                          delay=delay)
 
 topos = {'customTopo': ( lambda: customTopo() )}
