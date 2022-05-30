@@ -13,7 +13,7 @@ def clean_hex(n):
     plainstr = hxstr.split("0x")[1]
     return plainstr.split("L")[0]
 
-class cutomTopo(Topo):
+class customTopo(Topo):
     """ create a custom topology"""
     def __init__(self, **opts):
         listenPort = 6653
