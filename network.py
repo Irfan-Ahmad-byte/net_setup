@@ -26,7 +26,7 @@ class customTopo(Topo):
         for node in nodes: # node name as unicode str
             if node['type'] == 'switch':
                 # datapath id as ascii and to hex
-                our_dpid = our_dpid = clean_hex(to_int(node['id'].encode('ascii')))
+                our_dpid = node['id']
                 switch = self.addSwitch(node['id'], listenPort=listenPort, 
                     dpid=our_dpid)
                 listenPort += 1
